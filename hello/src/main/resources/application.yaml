@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: hello
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      httpclient:
+        enabled: true
+      client:
+        config:
+          default:
+            connectTimeout: 60000
+            readTimeout:  60000
+    loadbalancer:
+      retry:
+        enabled: false
+      eager-load:
+        clients:
+          - USER-TEST
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8082
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        minimumNumberOfCalls: 60
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 15s
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 100
+logging:
+  level:
+    org.springframework.cloud.openfeign: trace
+#    org.springframework.beans: trace
+    root: info
